@@ -9,6 +9,7 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
+
 # Initialize the Flask application
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE  # Configure the database URI
@@ -22,9 +23,14 @@ db.init_app(app)  # Initialize the database with the app
 # Initialize Flask-RESTful API
 api = Api(app)
 
+# Create the tables if they don't exist
+with app.app_context():
+    db.create_all()
+
 # Define a simple index route
 @app.route("/")
 def index():
+    print("Index route accessed")
     return "<h1>Code challenge</h1>"
 
 # Endpoint to get all restaurants
