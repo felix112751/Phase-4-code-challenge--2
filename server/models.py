@@ -11,7 +11,7 @@ metadata = MetaData(
     }
 )
 
-# Initialize SQLAlchemy with the custom metadata
+# Initializing SQLAlchemy with the custom metadata
 db = SQLAlchemy(metadata=metadata)
 
 # Restaurant model representing the 'restaurants' table
@@ -30,7 +30,7 @@ class Restaurant(db.Model, SerializerMixin):
         cascade='all, delete-orphan'
     )
 
-    # Serialization rules to exclude certain attributes
+    # Serializating rules to exclude certain attributes
     serialize_rules = ['-restaurant_pizzas.restaurant']
 
     def __repr__(self):
@@ -48,7 +48,7 @@ class Pizza(db.Model, SerializerMixin):
     # Relationship with RestaurantPizza
     restaurant_pizzas = db.relationship('RestaurantPizza', back_populates='pizza')
 
-    # Serialization rules to exclude certain attributes
+    # Serializating rules to exclude certain attributes
     serialize_rules = ['-restaurant_pizzas.pizza']
 
     def __repr__(self):
@@ -68,10 +68,10 @@ class RestaurantPizza(db.Model, SerializerMixin):
     restaurant = db.relationship('Restaurant', back_populates='restaurant_pizzas')
     pizza = db.relationship('Pizza', back_populates='restaurant_pizzas')
 
-    # Serialization rules to exclude certain attributes
+    # Serializating rules to exclude certain attributes
     serialize_rules = ['-restaurant.restaurant_pizzas', '-pizza.restaurant_pizzas']
 
-    # Validation for the price field
+    # Validating  the price field
     @validates('price')
     def validates_price(self, key, new_price):
         if not (1 <= new_price <= 30):

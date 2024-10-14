@@ -5,25 +5,25 @@ from flask import Flask, request, make_response
 from flask_restful import Api, Resource
 import os
 
-# Set up the base directory and database URI
+# Setting up the base directory and database URI
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 
-# Initialize the Flask application
+# Initializing the Flask application
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE  # Configure the database URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Disable track modifications
 app.json.compact = False  # Set JSON output formatting
 
-# Set up database migration support
+# Setting up database migration support
 migrate = Migrate(app, db)
 db.init_app(app)  # Initialize the database with the app
 
-# Initialize Flask-RESTful API
+# Initializing Flask-RESTful API
 api = Api(app)
 
-# Create the tables if they don't exist
+# Create the table 
 with app.app_context():
     db.create_all()
 
@@ -84,6 +84,6 @@ def create_new_pizza():
     db.session.commit()  # Commit changes to the database
     return new_restaurant_pizza.to_dict(), 201  # Return created association details
 
-# Run the app if this script is executed
+#   This codes run the app if this script is executed
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
